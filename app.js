@@ -10,9 +10,14 @@ var GitHubStrategy = require('passport-github2').Strategy;
 var config = require('./config');
 
 passport.use(new GitHubStrategy({
+  
   clientID: config.github.CLIENT_ID,
   clientSecret: config.github.CLIENT_SECRET,
   callbackURL: config.github.callbackURL
+  /*
+  clientID:'6f1aa7b23aafda023a8c',
+  clientSecret:'d984c065370a5c4f2aa69b31368361c6c56c0f06',
+  callbackURL: 'http://example.net:8000/auth/github/callback'*/
 },
   function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {

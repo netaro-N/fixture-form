@@ -4,4 +4,19 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light.rounded-bottom.fixed-top
+      a(href="/").navbar-brand.nav-link 
+        div.d-inline-block FixtureFormへようこそ
+      button.navbar-toggler(type="button" data-toggle="collapse" data-target="#Navbar" aria-controls="Navbar" aria-expanded="false" aria-label="レスポンシブ・ナビゲーションバー")
+        span.navbar-toggler-icon
+      div.collapse.navbar-collapse(id='Navbar')
+        ul.navbar-nav.ml-auto.mt-2.mt-lg-0
+          li.nav-item
+            a(href="/").nav-link.d-inline-block.btn.btn-secondary 管理人ページ
+          li.nav-item
+            if user
+              a(href="/logout").nav-link #{user.username} をログアウト
+            else
+              a(href="/auth/github").nav-link GitHubでログイン
+    div.container
+      block content
