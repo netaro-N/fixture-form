@@ -37,7 +37,7 @@ passport.deserializeUser(function (obj, done) {
 
 var indexRouter = require('./routes/index');
 var logoutRouter = require('./routes/logout');
-//var postsRouter = require('./routes/posts');
+var postsRouter = require('./routes/posts');
 
 var app = express();
 app.use(helmet());
@@ -58,7 +58,7 @@ app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/logout', logoutRouter);
-//app.use('/posts', postsRouter);
+app.use('/posts', postsRouter);
 
 // GitHub認証の実行およびコールバック処理
 app.get('/auth/github',
