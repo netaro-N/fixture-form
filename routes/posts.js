@@ -11,7 +11,7 @@ router.post('/', function(req, res, next) {
     const decoded = decodeURIComponent(body);
     const content = decoded.split('content=')[1];
 */
-    console.info('投稿されました: ' + content);
+    console.info('投稿されました: ' + req.body.content);
     res.redirect(303,'/');
   });
 
