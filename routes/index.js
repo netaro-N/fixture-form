@@ -9,8 +9,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/posts', function(req, res, next) {
-  console.log('リクエストユーザー（req.user）の情報' + req.user)
-  contents.push(content);
+  console.log('リクエストユーザー（req.user.userid）の情報' + req.user.userid)
+  contents.push(req.body.content);
     /*
   Post.create({
       postedBy: req.user
