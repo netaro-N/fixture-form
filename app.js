@@ -24,6 +24,8 @@ passport.use(new GitHubStrategy({
 },
   function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
+      const userId = profile.provider + profile.id 
+      console.log('userIdは' + userId);
       return done(null, profile);
     });
   }
