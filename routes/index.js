@@ -9,14 +9,15 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/posts', function(req, res, next) {
-  console.log('リクエストユーザー（req.user.id）の情報' + req.user.id)
-  console.log('リクエストユーザー（req.user.provider）の情報' + req.user.provider)
+  const userId = req.user.provider + req.user.id;
   contents.push(req.body.content);
-    /*
+
   Post.create({
-      postedBy: req.user
-    })*/
-    res.redirect(303,'/');
+      postedBy: userId,
+      content: req.body.content
+    }).then(() => {
+      res.redirect(303,'/');
+    });
 });
 
 module.exports = router;
