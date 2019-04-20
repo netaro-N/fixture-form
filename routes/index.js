@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-const Post = require('../model/post');
-
+const Post = require('../models/post');
+const contents = [];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -10,6 +10,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/posts', function(req, res, next) {
   console.log('リクエストユーザー（req.user）の情報' + req.user)
+  contents.push(content);
     /*
   Post.create({
       postedBy: req.user
