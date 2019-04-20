@@ -13,7 +13,7 @@ var config = require('./config');
 var User = require('./models/user');
 var Post = require('./models/post');
 User.sync().then(() => {
-  Post.belongsTo(User, {foreignKey: 'createdBy'});
+  Post.belongsTo(User, {foreignKey: 'postedBy'});
   Post.sync();
 });
 
