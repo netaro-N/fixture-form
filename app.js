@@ -9,6 +9,10 @@ var passport = require('passport');
 var GitHubStrategy = require('passport-github2').Strategy;
 var config = require('./config');
 
+// モデルの読み込み
+var User = require('./models/user');
+var Post = require('./models/post')
+
 passport.use(new GitHubStrategy({
   clientID: config.github.CLIENT_ID,
   clientSecret: config.github.CLIENT_SECRET,
