@@ -11,7 +11,11 @@ var config = require('./config');
 
 // モデルの読み込み
 var User = require('./models/user');
-var Post = require('./models/post')
+var Post = require('./models/post');
+User.sync().then(() => {
+  Post.belongsTo(User, {foreignKey: 'createdBy'});
+  Post.sync();
+});
 
 passport.use(new GitHubStrategy({
   clientID: config.github.CLIENT_ID,
