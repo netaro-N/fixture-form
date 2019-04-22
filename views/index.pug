@@ -2,14 +2,16 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
   if user
+    p #{user.username}さんこんにちは
     h2 新規投稿
     form(method="post" action="/posts")
       div
         textarea(name="content" cols=40 rows=4)
       div
         button(type="submit") 投稿
+  else
+    p ログインして投稿してみよう！
   h2 投稿一覧
   each content in contents
     p #{content}
