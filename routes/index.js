@@ -5,11 +5,13 @@ const contents = [];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  const title = 'Fixture-Form'
-  res.render('index', {
-    title: title,
-    user:req.user ,
-    contents:contents
+  const title = 'Fixture-Form';
+  Post.findAll({order:[['id', 'DESC']]}).then((posts) => {
+    res.render('index', {
+      title: title,
+      user:req.user ,
+      posts:posts
+    });
   });
 });
 
