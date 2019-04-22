@@ -16,4 +16,11 @@ block content
   each post in posts
     p #{post.content}
     p 投稿日時: #{post.createdAt}
+    if user
+      - var userId = user.provider + user.id;
+      - var isDeletable = (userId === post.postedBy)
+      if isDeletable
+        form(method="post" action="/posts?delete=1")
+          input(type="hidden" name="id" value=post.id)
+          button(type="submit") 削除
     hr
