@@ -5,7 +5,12 @@ const contents = [];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', user:req.user ,contents:contents});
+  const title = 'Fixture-Form'
+  res.render('index', {
+    title: title,
+    user:req.user ,
+    contents:contents
+  });
 });
 
 router.post('/posts', function(req, res, next) {
