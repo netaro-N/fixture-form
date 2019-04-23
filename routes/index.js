@@ -15,10 +15,25 @@ router.get('/', (req, res, next) => {
   });
 });
 
+function isMine(req, post) {
+  
+}
+
 router.post('/posts', authenticationEnsurer, (req, res, next) => {
   if (parseInt(req.query.delete) === 1) {
-    console.log(req.body.id);
-    res.redirect(303, '/');
+    // console.log(req.body.id);
+    const id = req.body.id;
+    Post.findByPk(id).then((post) => {
+      if(post && isMine(req, post)){
+        post.destroy().then(() => {
+          res.redirect(303, '/');
+        });
+      } else {
+        const err = new Error('指定された投稿がない、または、削除する権限がありません。');
+        err.status = 404;
+        next(err);
+      }
+    });
   } else {
     const userId = req.user.provider + req.user.id;
     Post.create({
