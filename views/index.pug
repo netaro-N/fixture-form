@@ -22,5 +22,5 @@ block content
       if isDeletable
         form(method="post" action="/posts?delete=1")
           input(type="hidden" name="id" value=post.id)
-          button(type="submit") 削除
+          button(type="submit" onclick="return confirm(`投稿を\n削除して良いですか？`);") 削除
     hr
