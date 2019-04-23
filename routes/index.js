@@ -15,7 +15,7 @@ router.get('/', (req, res, next) => {
   });
 });
 
-router.post('/posts', (req, res, next) => {
+router.post('/posts', authenticationEnsurer, (req, res, next) => {
 
   const userId = req.user.provider + req.user.id;
   Post.create({
