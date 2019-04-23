@@ -16,12 +16,12 @@ router.get('/', (req, res, next) => {
 });
 
 function isMine(req, post) {
-  
+  const userId = req.user.provider + req.user.id;
+  return post && post.postedBy === userId ;
 }
 
 router.post('/posts', authenticationEnsurer, (req, res, next) => {
   if (parseInt(req.query.delete) === 1) {
-    // console.log(req.body.id);
     const id = req.body.id;
     Post.findByPk(id).then((post) => {
       if(post && isMine(req, post)){
