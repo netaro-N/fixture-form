@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const Post = require('../models/post');
-const contents = [];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -16,15 +15,15 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/posts', function(req, res, next) {
-  const userId = req.user.provider + req.user.id;
-  contents.push(req.body.content);
 
+  const userId = req.user.provider + req.user.id;
   Post.create({
       postedBy: userId,
       content: req.body.content
     }).then(() => {
       res.redirect(303,'/');
     });
+
 });
 
 module.exports = router;
