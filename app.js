@@ -27,7 +27,6 @@ passport.use(new GitHubStrategy({
 },
   function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
-      console.log([profile.emails]);
       const userId = profile.provider + profile.id;  // サロゲートキー
       User.upsert({
         userId: userId,
