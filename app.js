@@ -18,6 +18,7 @@ User.sync().then(() => {
   Post.sync();
 });
 
+// GitHub認証
 passport.use(new GitHubStrategy({
   clientID: config.github.CLIENT_ID,
   clientSecret: config.github.CLIENT_SECRET,
@@ -25,7 +26,8 @@ passport.use(new GitHubStrategy({
 },
   function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
-      const userId = profile.provider + profile.id  // サロゲートキー
+      console.log('emailは'+profile.emails);
+      const userId = profile.provider + profile.id;  // サロゲートキー
       User.upsert({
         userId: userId,
         username: profile.username
@@ -35,6 +37,22 @@ passport.use(new GitHubStrategy({
     });
   }
 ));
+
+passport.use(new TwitterStrategy({
+    consumerKey: config.twitter.consumerKey,
+    consumerSecret: config.twitter.consumerSecret,
+    callbackURL: config.twitter.callbackURL
+  },
+  function(token, tokenSecret, profile, done) {
+    process.nextTick(function () {
+      const userId = profile.provider+profile.id  //サロゲートキー
+      console.log('IDは'+profile.provider+profile.id);
+      console.log('displayNameは'+profile.displayName);
+      console.log('emailは'+profile.emails);
+      return done(null, profile);
+    });
+  })
+);
 
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -78,6 +96,17 @@ app.get('/auth/github',
 app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/' }),
   function (req, res) {
+    res.redirect('/');
+});
+
+// Twitter認証の実行およびコールバック処理
+app.get('/auth/twitter',
+  passport.authenticate('twitter', { scope: ['user:email'] }),
+  function (req, res){
+});
+app.get('/auth/twitter/callback',
+  passport.authenticate('twitter', { failureRedirect: '/' }),
+  function(req, res) {
     res.redirect('/');
 });
 
