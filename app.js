@@ -36,8 +36,8 @@ passport.use(new GitHubStrategy({
         done(null, profile);
       });
     });
-  }
-));
+  })
+);
 
 passport.use(new TwitterStrategy({
     consumerKey: config.twitter.consumerKey,
@@ -47,9 +47,12 @@ passport.use(new TwitterStrategy({
   function(token, tokenSecret, profile, done) {
     process.nextTick(function () {
       const userId = profile.provider+profile.id  //サロゲートキー
-      console.log('IDは'+profile.provider+profile.id);
-      console.log('displayNameは'+profile.displayName);
-      return done(null, profile);
+      User.upsert({
+        userId: userId,
+        username: profile.displayName
+      }).then(() => {
+        done(null, profile);
+      });
     });
   })
 );
