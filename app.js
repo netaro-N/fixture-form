@@ -22,11 +22,12 @@ User.sync().then(() => {
 passport.use(new GitHubStrategy({
   clientID: config.github.CLIENT_ID,
   clientSecret: config.github.CLIENT_SECRET,
-  callbackURL: config.github.callbackURL
+  callbackURL: config.github.callbackURL,
+  scope: ['user:email'],
 },
   function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
-      console.log('emailは'+profile.emails);
+      console.log([profile.emails]);
       const userId = profile.provider + profile.id;  // サロゲートキー
       User.upsert({
         userId: userId,
@@ -48,7 +49,6 @@ passport.use(new TwitterStrategy({
       const userId = profile.provider+profile.id  //サロゲートキー
       console.log('IDは'+profile.provider+profile.id);
       console.log('displayNameは'+profile.displayName);
-      console.log('emailは'+profile.emails);
       return done(null, profile);
     });
   })
