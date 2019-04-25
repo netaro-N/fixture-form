@@ -7,6 +7,7 @@ var helmet = require('helmet');
 var session = require('express-session');
 var passport = require('passport');
 var GitHubStrategy = require('passport-github2').Strategy;
+var TwitterStrategy = require('passport-twitter').Strategy;
 var config = require('./config');
 
 // モデルの読み込み
