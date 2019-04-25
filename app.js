@@ -49,7 +49,7 @@ passport.use(new TwitterStrategy({
       const userId = profile.provider+profile.id  //サロゲートキー
       User.upsert({
         userId: userId,
-        username: profile.displayName
+        username: profile.username
       }).then(() => {
         done(null, profile);
       });
