@@ -18,6 +18,7 @@ html
               a(href="/logout").nav-link #{user.username} をログアウト
             else
               a(href="/auth/github").nav-link GitHubでログイン
+              |
               a(href="/auth/twitter").nav-link Twitterでログイン
     div.container
       block content

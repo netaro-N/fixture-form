@@ -3,7 +3,10 @@ extends layout
 block content
   h1= title
   if user
-    p #{user.username}さんこんにちは
+    if user.displayName
+      p #{use.displayName} さんこんにちは
+    else
+      p #{user.username}さんこんにちは
     h2 新規投稿
     form(method="post" action="/posts")
       div
