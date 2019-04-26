@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const Post = require('../models/post');
 const authenticationEnsurer = require('./authentication-ensurer');
-const config = require('./config');
+const config = require('../config');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
