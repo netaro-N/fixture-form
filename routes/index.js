@@ -1,13 +1,21 @@
 var express = require('express');
 var router = express.Router();
 const Post = require('../models/post');
+const User = require('../models/user');
 const authenticationEnsurer = require('./authentication-ensurer');
 const config = require('../config');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
   const title = 'Fixture-Form';
-  Post.findAll({ order: [['id', 'DESC']] }).then((posts) => {
+  Post.findAll({
+    include: [
+      {
+        model: User,
+        attributes: ['userId','username']
+      }],
+    order: [['id', 'DESC']] 
+  }).then((posts) => {
     console.log(posts);
     res.render('index', {
       title: title,
