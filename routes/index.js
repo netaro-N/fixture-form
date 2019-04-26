@@ -8,6 +8,7 @@ const config = require('../config');
 router.get('/', (req, res, next) => {
   const title = 'Fixture-Form';
   Post.findAll({ order: [['id', 'DESC']] }).then((posts) => {
+    console.log(posts);
     res.render('index', {
       title: title,
       user: req.user,

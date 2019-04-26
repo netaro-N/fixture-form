@@ -21,10 +21,7 @@ block content
     if isPostedByAdmin
       p 投稿者： 管理人　★
     else
-      if user.displayName
-      p 投稿者：#{user.displayName}さん
-    else
-      p 投稿者：#{user.username}さん
+      p 投稿者：#{post.username}さん
     p(style="white-space:pre;") #{post.content}
     p 投稿日時: #{post.createdAt}
     if user
