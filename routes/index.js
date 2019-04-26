@@ -36,6 +36,7 @@ router.post('/posts', authenticationEnsurer, (req, res, next) => {
     });
   } else {
     const userId = req.user.provider + req.user.id;
+    console.log(req.body);
     Post.create({
       postedBy: userId,
       content: req.body.content
