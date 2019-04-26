@@ -17,6 +17,14 @@ block content
     p ログインして投稿してみよう！
   h2 投稿一覧
   each post in posts
+    - var isPostedByAdmin = (post.postedBy === admin)
+    if isPostedByAdmin
+      p 投稿者： 管理人　★
+    else
+      if user.displayName
+      p 投稿者：#{user.displayName}さん
+    else
+      p 投稿者：#{user.username}さん
     p(style="white-space:pre;") #{post.content}
     p 投稿日時: #{post.createdAt}
     if user

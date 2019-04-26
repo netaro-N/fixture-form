@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const Post = require('../models/post');
 const authenticationEnsurer = require('./authentication-ensurer');
+const config = require('./config');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -10,7 +11,8 @@ router.get('/', (req, res, next) => {
     res.render('index', {
       title: title,
       user: req.user,
-      posts: posts
+      posts: posts,
+      admin: config.admin
     });
   });
 });
@@ -36,7 +38,6 @@ router.post('/posts', authenticationEnsurer, (req, res, next) => {
     });
   } else {
     const userId = req.user.provider + req.user.id;
-    console.log(req.body);
     Post.create({
       postedBy: userId,
       content: req.body.content
