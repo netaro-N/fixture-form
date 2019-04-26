@@ -16,7 +16,6 @@ router.get('/', (req, res, next) => {
       }],
     order: [['id', 'DESC']] 
   }).then((posts) => {
-    console.log(posts);
     res.render('index', {
       title: title,
       user: req.user,
