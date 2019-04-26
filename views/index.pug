@@ -17,7 +17,7 @@ block content
     p ログインして投稿してみよう！
   h2 投稿一覧
   each post in posts
-    p #{post.content}
+    p(style="white-space:pre;") #{post.content}
     p 投稿日時: #{post.createdAt}
     if user
       - var userId = user.provider + user.id;
