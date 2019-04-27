@@ -8,6 +8,7 @@
   "dependencies": {
     "cookie-parser": "~1.4.3",
     "csrf": "^3.1.0",
+    "csurf": "^1.10.0",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "express-session": "^1.16.1",
