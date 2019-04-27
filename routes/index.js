@@ -4,7 +4,7 @@ const Post = require('../models/post');
 const User = require('../models/user');
 const authenticationEnsurer = require('./authentication-ensurer');
 const config = require('../config');
-const csrf = require('csrf');
+const csrf = require('csurf');
 const csrfProtection = csrf({ cookie: true });
 
 /* GET home page. */
