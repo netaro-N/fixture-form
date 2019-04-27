@@ -9,6 +9,7 @@ block content
       p #{user.username}さんこんにちは
     h2 新規投稿
     form(method="post" action="/posts")
+      input(type="hidden" name="_csrf" value!=csrfToken)
       div
         textarea(name="content" cols=40 rows=4)
       div
@@ -29,6 +30,7 @@ block content
       - var isDeletable = (userId === post.postedBy || userId === admin)
       if isDeletable
         form(method="post" action="/posts?delete=1")
+          input(type="hidden" name="_csrf" value!=csrfToken)
           input(type="hidden" name="id" value=post.id)
           button(type="submit" onclick="return confirm(`投稿を削除します\nよろしいですね？`);") 削除
     hr
