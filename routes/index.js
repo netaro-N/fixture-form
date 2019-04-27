@@ -30,11 +30,16 @@ function isMine(req, post) {
   return post && post.postedBy === userId ;
 }
 
+function isAdmin(req, post) {
+  const userId = req.user.provider + req.user.id;
+  return post && config.admin === userId ;
+}
+
 router.post('/posts', authenticationEnsurer, (req, res, next) => {
   if (parseInt(req.query.delete) === 1) {
     const id = req.body.id;
     Post.findByPk(id).then((post) => {
-      if(post && isMine(req, post)){
+      if(post && (isMine(req, post) || isAdmin(req, post)) ){
         post.destroy().then(() => {
           res.redirect(303, '/');
         });
