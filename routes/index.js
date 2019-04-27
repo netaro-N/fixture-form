@@ -4,9 +4,11 @@ const Post = require('../models/post');
 const User = require('../models/user');
 const authenticationEnsurer = require('./authentication-ensurer');
 const config = require('../config');
+const csrf = require('csrf');
+const csrfProtection = csrf({ cookie: true });
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
+router.get('/', csrfProtection,(req, res, next) => {
   const title = 'Fixture-Form';
   Post.findAll({
     include: [
@@ -20,7 +22,8 @@ router.get('/', (req, res, next) => {
       title: title,
       user: req.user,
       posts: posts,
-      admin: config.admin
+      admin: config.admin,
+      csrfToken: req.csrfToken()
     });
   });
 });
@@ -35,7 +38,7 @@ function isAdmin(req, post) {
   return post && config.admin === userId ;
 }
 
-router.post('/posts', authenticationEnsurer, (req, res, next) => {
+router.post('/posts', authenticationEnsurer, csrfProtection,(req, res, next) => {
   if (parseInt(req.query.delete) === 1) {
     const id = req.body.id;
     Post.findByPk(id).then((post) => {
