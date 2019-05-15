@@ -6,6 +6,7 @@ const authenticationEnsurer = require('./authentication-ensurer');
 const config = require('../config');
 const csrf = require('csurf');
 const csrfProtection = csrf({ cookie: true });
+const moment = require('moment-timezone');
 
 /* GET home page. */
 router.get('/', csrfProtection,(req, res, next) => {
@@ -18,6 +19,9 @@ router.get('/', csrfProtection,(req, res, next) => {
       }],
     order: [['id', 'DESC']] 
   }).then((posts) => {
+    posts.forEach((post) => {
+      post.formattedCreatedAt = moment(post.createdAt).tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm');
+    });
     res.render('index', {
       title: title,
       user: req.user,
