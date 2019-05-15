@@ -24,7 +24,7 @@ block content
     else
       p 投稿者：#{post.user.username}さん
     p(style="white-space:pre;") #{post.content}
-    p 投稿日時: #{post.createdAt}
+    p 投稿日時: #{post.formattedCreatedAt}
     if user
       - var userId = user.provider + user.id;
       - var isDeletable = (userId === post.postedBy || userId === admin)
