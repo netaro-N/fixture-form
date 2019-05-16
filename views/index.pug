@@ -17,24 +17,26 @@ block content
   else
     p ログインして投稿してみよう！
   h2 投稿一覧
-  div.card-columns
-    each post in posts
-      div.card
-        div.card-header
-          - var isPostedByAdmin = (post.postedBy === admin)
-          if isPostedByAdmin
-            p 投稿者： 管理人　★
-          else
-            p 投稿者：#{post.user.username}さん
-        div.card-body
-          p(style="white-space:pre;") #{post.content}
-        div.card-footer
-          p 投稿日時: #{post.formattedCreatedAt}
-          if user
-            - var userId = user.provider + user.id;
-            - var isDeletable = (userId === post.postedBy || userId === admin)
-            if isDeletable
-              form(method="post" action="/posts?delete=1")
-                input(type="hidden" name="_csrf" value!=csrfToken)
-                input(type="hidden" name="id" value=post.id)
-                button(type="submit" onclick="return confirm(`投稿を削除します\nよろしいですね？`);") 削除
+  div.container-fluid.content-row
+    div.row
+      each post in posts
+        div.col-sm-12.col-lg-6.my-2
+          div.card.h-100
+            div.card-header
+              - var isPostedByAdmin = (post.postedBy === admin)
+              if isPostedByAdmin
+                p 投稿者： 管理人　★
+              else
+                p 投稿者：#{post.user.username}さん
+            div.card-body
+              p(style="white-space:pre;") #{post.content}
+            div.card-footer
+              p 投稿日時: #{post.formattedCreatedAt}
+              if user
+                - var userId = user.provider + user.id;
+                - var isDeletable = (userId === post.postedBy || userId === admin)
+                if isDeletable
+                  form(method="post" action="/posts?delete=1")
+                    input(type="hidden" name="_csrf" value!=csrfToken)
+                    input(type="hidden" name="id" value=post.id)
+                    button(type="submit" onclick="return confirm(`投稿を削除します\nよろしいですね？`);") 削除
