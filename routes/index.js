@@ -15,7 +15,7 @@ router.get('/', csrfProtection,(req, res, next) => {
     include: [
       {
         model: User,
-        attributes: ['userId','username']
+        attributes: ['userId','username','thumbUrl']
       }],
     order: [['id', 'DESC']] 
   }).then((posts) => {

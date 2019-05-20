@@ -30,7 +30,8 @@ passport.use(new GitHubStrategy({
       const userId = profile.provider + profile.id;  // サロゲートキー
       User.upsert({
         userId: userId,
-        username: profile.username
+        username: profile.username,
+        thumbUrl: profile.photos[0].value
       }).then(() => {
         done(null, profile);
       });
@@ -48,7 +49,8 @@ passport.use(new TwitterStrategy({
       const userId = profile.provider+profile.id  //サロゲートキー
       User.upsert({
         userId: userId,
-        username: profile.username
+        username: profile.username,
+        thumbUrl: profile.photos[0].value
       }).then(() => {
         done(null, profile);
       });

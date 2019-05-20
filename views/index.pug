@@ -28,10 +28,12 @@ block content
               - var isPostedByAdmin = (post.postedBy === admin)
               if isPostedByAdmin
                 p 投稿者： 管理人　★
-                //img(src=`${user.photos[0].value}`) =>ダメだ。データベースに無い！
+                img(src=`${post.user.thumbUrl}` width="50px")
+                //p #{post.user.thumbUrl}
               else
                 p 投稿者：#{post.user.username}さん
-                //img(src=`${user.photos[0].value}`) => ゞ
+                img(src=`${post.user.thumbUrl}`)
+                //p #{post.user.username}
             div.card-body
               p(style="white-space:pre;") #{post.content}
             div.card-footer
