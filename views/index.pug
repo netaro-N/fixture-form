@@ -5,8 +5,10 @@ block content
   if user
     if user.displayName
       p #{user.displayName} さんこんにちは
+      img(src=`${user.photos[0].value}` width="50" height="50")
     else
       p #{user.username}さんこんにちは
+      img(src=`${user.photos[0].value}` width="50" height="50")
     h2 新規投稿
     form(method="post" action="/posts")
       input(type="hidden" name="_csrf" value!=csrfToken)
@@ -26,8 +28,10 @@ block content
               - var isPostedByAdmin = (post.postedBy === admin)
               if isPostedByAdmin
                 p 投稿者： 管理人　★
+                //img(src=`${user.photos[0].value}`) =>ダメだ。データベースに無い！
               else
                 p 投稿者：#{post.user.username}さん
+                //img(src=`${user.photos[0].value}`) => ゞ
             div.card-body
               p(style="white-space:pre;") #{post.content}
             div.card-footer
