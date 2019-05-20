@@ -35,7 +35,7 @@ block content
                 img(src=`${post.user.thumbUrl}`)
                 //p #{post.user.username}
             div.card-body
-              p(style="white-space:pre;") #{post.content}
+              p(style="white-space:pre-wrap;") #{post.content}
             div.card-footer
               p 投稿日時: #{post.formattedCreatedAt}
               if user
