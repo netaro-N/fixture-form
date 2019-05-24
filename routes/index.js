@@ -41,12 +41,25 @@ router.get('/', csrfProtection,(req, res, next) => {
   }).then((evaluations) =>{
 // forEach でselfEvaluationMapに{[postId:evaluation]…}入れていく
 // selfEvaluationMap.set(e.postId , e.evaluation)
-
+    evaluations.forEach((e) => {
+      selfEvaluationMap.set(e.postId, e.evaluations);
+      console.log('（評価済み）投稿'+e.postId+'へあなたの評価は'+e.evaluations);
+    });
 
 // storedPostsをforEachで回して、
 // const e = selfEvaluationMap.get(p.id) || 0
 // rendSelfEvaluationMap.set(p.id , e)
+    storedPosts.forEach((p) => {
+      const e = selfEvaluationMap.get(p.id) || 0;
+      rendSelfEvaluationMap.set(p.id, e);
+      console.log('（全投稿）投稿'+p.id+'へあなたの評価は'+e);
+    });
 
+// storedPostsごとforEachの、Evaluation.findAllの{evaluation: true}の合計
+// sumPostEvMap.set(postId , COUNT)
+
+
+// プラスするもの＝＞　rendSelfEvaluationMap , sumPostEvMap
     res.render('index', {
       title: title,
       user: req.user,

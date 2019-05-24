@@ -16,7 +16,7 @@ const Evaluation = loader.database.define('evaluations', {
   evaluation: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
-    defaultValue: true
+    defaultValue: false
   }
 }, {
   freezeTableName: true,
