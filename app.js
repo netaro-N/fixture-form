@@ -15,10 +15,10 @@ var User = require('./models/user');
 var Post = require('./models/post');
 var Evaluation = require('./models/evaluation');
 User.sync().then(() => {
-  Evaluation.belongsTo(User, {foreignKey: 'userId'});
   Post.belongsTo(User, {foreignKey: 'postedBy'});
-    Evaluation.belongsTo(Post, {foreignKey: 'postId', targetKey:'id'})
-    Post.sync();
+  Post.sync();
+  Evaluation.belongsTo(User, {foreignKey: 'userId'});
+  Evaluation.sync();
 });
 
 // GitHub認証
