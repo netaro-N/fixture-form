@@ -59,7 +59,7 @@ router.get('/', csrfProtection, (req, res, next) => {
         // const e = selfEvaluationMap.get(p.id) || 0
         // rendSelfEvaluationMap.set(p.id , e)
         storedPosts.forEach((p) => {
-          const e = selfEvaluationMap.get(p.id) || 0;
+          const e = selfEvaluationMap.get(p.id) || false;
           rendSelfEvaluationMap.set(p.id, e);
           console.log('（全投稿）投稿' + p.id + 'へあなたの評価は' + e);
         });

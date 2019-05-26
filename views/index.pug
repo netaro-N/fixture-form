@@ -26,6 +26,7 @@ block content
           div.card.h-100
             div.card-header
               - var isPostedByAdmin = (post.postedBy === admin)
+              - var evaluations = sumPostEvMap.get(post.id) || 0;
               if isPostedByAdmin
                 p 投稿者： 管理人　★
                 img(src=`${post.user.thumbUrl}` width="50px")
@@ -36,10 +37,18 @@ block content
                 //p #{post.user.username}
             div.card-body
               p(style="white-space:pre-wrap;") #{post.content}
+              p いいね総数 #{evaluations}
             div.card-footer
               p 投稿日時: #{post.formattedCreatedAt}
               if user
                 - var userId = user.provider + user.id;
+                - var e = SelfEvaMap.get(post.id);
+                - var string = e ? 'true' : 'false'
+                p #{e}
+                button(
+                  data-post-id=post.id
+                  data-user-id=userId
+                  data-user-evaluation=string) いいねボタン
                 - var isDeletable = (userId === post.postedBy || userId === admin)
                 if isDeletable
                   form(method="post" action="/posts?delete=1")
