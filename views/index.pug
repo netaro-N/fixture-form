@@ -43,12 +43,12 @@ block content
               if user
                 - var userId = user.provider + user.id;
                 - var e = SelfEvaMap.get(post.id);
-                - var string = e ? 'true' : 'false'
+                - var string = !e ? 'true' : 'false'
                 p #{e}
                 button(
                   data-post-id=post.id
                   data-user-id=userId
-                  data-user-evaluation=string) いいねボタン
+                  data-user-evaluation=string).evaluation-button いいねボタン
                 - var isDeletable = (userId === post.postedBy || userId === admin)
                 if isDeletable
                   form(method="post" action="/posts?delete=1")
