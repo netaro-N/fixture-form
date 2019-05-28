@@ -37,14 +37,14 @@ block content
                 //p #{post.user.username}
             div.card-body
               p(style="white-space:pre-wrap;") #{post.content}
-              p いいね総数 #{evaluations}
             div.card-footer
               p 投稿日時: #{post.formattedCreatedAt}
+              p イイね総数
+              p #{evaluations}
               if user
                 - var userId = user.provider + user.id;
                 - var e = SelfEvaMap.get(post.id);
                 - var string = e ? 'true' : 'false'
-                p #{e}
                 button(
                   data-post-id=post.id
                   data-user-id=userId

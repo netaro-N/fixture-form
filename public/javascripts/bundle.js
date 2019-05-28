@@ -101,16 +101,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()('.evaluation-button').each(functio
     var postId = button.data('post-id');
     var userId = button.data('user-id');
     var evaluation = button.attr('data-user-evaluation') === 'false' ? true : false;
-    console.log(evaluation); //const nextAvailability = (availability + 1) % 3;
-
     jquery__WEBPACK_IMPORTED_MODULE_0___default.a.post("/post/".concat(postId, "/users/").concat(userId), {
       evaluation: evaluation
     }, function (data) {
-      console.log('data.evaluationは' + data.evaluation); //        const nextEvaluation = data.evaluation ? 'true' : 'false';
-      //console.log(nextEvaluation);
-
       button.attr('data-user-evaluation', data.evaluation);
     });
+    var nowGoodSum = parseInt(button.prev().text());
+    console.log(nowGoodSum);
   });
 });
 
