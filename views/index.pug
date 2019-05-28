@@ -43,7 +43,7 @@ block content
               if user
                 - var userId = user.provider + user.id;
                 - var e = SelfEvaMap.get(post.id);
-                - var string = !e ? 'true' : 'false'
+                - var string = e ? 'true' : 'false'
                 p #{e}
                 button(
                   data-post-id=post.id
