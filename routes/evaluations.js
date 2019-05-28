@@ -17,5 +17,7 @@ console.log(userId+'さんの'+postId+'への評価は'+evaluation+'です');
     //以下、イイね総数を取得！
     //最後に ↓
     res.json( {status: 'OK', evaluation: evaluation} ) // 足す, countUpEv: countUpEv } )
-  })
-})
+  });
+});
+
+module.exports = router;

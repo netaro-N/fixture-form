@@ -1,7 +1,7 @@
 'use strict';
 import $ from 'jquery';
 
-$('evaluation-button').each((i, e) => {
+$('.evaluation-button').each((i, e) => {
   const button = $(e);
   button.click(() => {
     const postId = button.data('post-id');
