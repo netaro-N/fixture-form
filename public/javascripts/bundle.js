@@ -107,8 +107,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()('.evaluation-button').each(functio
     }, function (data) {
       console.log(data.evaluation);
       var nextEvaluation = data.evaluation ? 'true' : 'false';
-      console.log(nextEvaluation);
-      button.data('user-evaluation', nextEvaluation);
+      console.log(!nextEvaluation);
+      button.attr('data-user-evaluation', !nextEvaluation);
     });
   });
 });

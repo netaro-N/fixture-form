@@ -37,13 +37,13 @@ router.get('/', csrfProtection, (req, res, next) => {
     return Evaluation.findAll({
       attributes: ['postId', [sequelize.fn('COUNT', sequelize.col('userId')), 'count']],
       group: ['postId'],
-      where: { evaluation: true }
+      where: { evaluation: 't' }
     });
   }).then((sumEva) => {
     const sumPostEvMap = new Map();
     sumEva.forEach((postEva) => {
-      sumPostEvMap.set(postEva.postId, postEva.evaluation);
-      console.log(postEva.postId + 'の「いいね」の数は' + postEva.evaluation);
+      sumPostEvMap.set(postEva.postId, postEva.dataValues['count']);
+      console.log(postEva.postId + 'の「いいね」の数は' + postEva.dataValues['count']);
     });
     if (req.user) {
       return Evaluation.findAll({
@@ -52,8 +52,8 @@ router.get('/', csrfProtection, (req, res, next) => {
         // forEach でselfEvaluationMapに{[postId:evaluation]…}入れていく
         // selfEvaluationMap.set(e.postId , e.evaluation)
         evaluations.forEach((e) => {
-          selfEvaluationMap.set(e.postId, e.evaluations);
-          console.log('（評価済み）投稿' + e.postId + 'へあなたの評価は' + e.evaluations);
+          selfEvaluationMap.set(e.postId, e.evaluation);
+          console.log('（評価済み）投稿' + e.postId + 'へあなたの評価は' + e.evaluation);
         });
         // storedPostsをforEachで回して、
         // const e = selfEvaluationMap.get(p.id) || 0

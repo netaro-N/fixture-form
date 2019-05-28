@@ -14,7 +14,7 @@ $('.evaluation-button').each((i, e) => {
 console.log(data.evaluation);
         const nextEvaluation = data.evaluation ? 'true' : 'false';
 console.log(nextEvaluation);
-        button.data('user-evaluation', nextEvaluation);
+        button.attr('data-user-evaluation', nextEvaluation);
       });
   });
 });
