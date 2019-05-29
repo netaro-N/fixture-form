@@ -105,9 +105,19 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()('.evaluation-button').each(functio
       evaluation: evaluation
     }, function (data) {
       button.attr('data-user-evaluation', data.evaluation);
+      var nowGoodSum = parseInt(button.prev().text());
+      console.log(nowGoodSum);
+
+      if (data.evaluation === 'true') {
+        nowGoodSum = ++nowGoodSum;
+      } else {
+        nowGoodSum = --nowGoodSum;
+      }
+
+      ;
+      console.log(nowGoodSum);
+      button.prev().text(nowGoodSum);
     });
-    var nowGoodSum = parseInt(button.prev().text());
-    console.log(nowGoodSum);
   });
 });
 

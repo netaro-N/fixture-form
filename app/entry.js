@@ -11,8 +11,17 @@ $('.evaluation-button').each((i, e) => {
       { evaluation: evaluation },
       (data) => {
         button.attr('data-user-evaluation', data.evaluation);
+        let nowGoodSum = parseInt(button.prev().text() );
+        console.log(nowGoodSum);
+        if(data.evaluation === 'true'){
+          nowGoodSum = ++nowGoodSum;
+        }else{
+          nowGoodSum = --nowGoodSum;
+        };
+        console.log(nowGoodSum);
+        button.prev().text(nowGoodSum);
       });
-    const nowGoodSum = parseInt(button.prev().text() );
-    console.log(nowGoodSum);
+
+
   });
 });
