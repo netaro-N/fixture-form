@@ -115,7 +115,7 @@ router.post('/posts', authenticationEnsurer, csrfProtection, (req, res, next) =>
         }).then((err) => {
         //const err = new Error('指定された投稿がない、または削除に失敗です');
         //err.status = 404;
-        if (err) return done(err);
+        if (err) return done(err); // ??いらんやろ。これテスト用や！
         done();
         //post.destroy().then(() => {
           //res.redirect(303, '/');
