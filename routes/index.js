@@ -115,7 +115,6 @@ router.post('/posts', authenticationEnsurer, csrfProtection, (req, res, next) =>
 
 function deletePostAggregate(req, done, err) {
   const id = req.body.id;
-  const done = () => {res.redirect('/');}
   Post.findByPk(id).then((post) => {
     if (post && (isMine(req, post) || isAdmin(req, post))) {
       //いいねの削除
