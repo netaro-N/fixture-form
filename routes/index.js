@@ -100,32 +100,8 @@ function isAdmin(req, post) {
 
 router.post('/posts', authenticationEnsurer, csrfProtection, (req, res, next) => {
   if (parseInt(req.query.delete) === 1) {
-    const id = req.body.id;
-    const done = () => {res.redirect('/');}
-    Post.findByPk(id).then((post) => {
-      if (post && (isMine(req, post) || isAdmin(req, post))) {
-        //いいねの削除
-        Evaluation.findAll({
-          where:{ postId:id }
-        }).then((evaluations) => {
-          const promises = evaluations.map((e) => { return e.destroy(); });
-          return Promise.all(promises);
-        }).then(() => {
-          return post.destroy();
-        }).then((err) => {
-        //const err = new Error('指定された投稿がない、または削除に失敗です');
-        //err.status = 404;
-        if (err) return done(err); // ??いらんやろ。これテスト用や！
-        done();
-        //post.destroy().then(() => {
-          //res.redirect(303, '/');
-        });
-      } else {
-        const err = new Error('指定された投稿がない、または、削除する権限がありません。');
-        err.status = 404;
-        next(err);
-      }
-    });
+    deletePostAggregate(req, () => {
+      res.redirect('/');})
   } else {
     const userId = req.user.provider + req.user.id;
     Post.create({
@@ -136,5 +112,30 @@ router.post('/posts', authenticationEnsurer, csrfProtection, (req, res, next) =>
     });
   }
 });
+
+function deletePostAggregate(req, done, err) {
+  const id = req.body.id;
+  const done = () => {res.redirect('/');}
+  Post.findByPk(id).then((post) => {
+    if (post && (isMine(req, post) || isAdmin(req, post))) {
+      //いいねの削除
+      Evaluation.findAll({
+        where:{ postId:id }
+      }).then((evaluations) => {
+        const promises = evaluations.map((e) => { return e.destroy(); });
+        return Promise.all(promises);
+      }).then(() => {
+        return post.destroy();
+      }).then(() => {
+      if (err) return done(err); // ??いらんやろ。これテスト用や！
+      done();
+      });
+    } else {
+      const err = new Error('指定された投稿がない、または、削除する権限がありません。');
+      err.status = 404;
+      next(err);
+    }
+  });
+}
 
 module.exports = router;
