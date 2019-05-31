@@ -137,4 +137,6 @@ function deletePostAggregate(req, done, err) {
   });
 }
 
+router.deletePostAggregate = deletePostAggregate;
+
 module.exports = router;
