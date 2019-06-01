@@ -15,7 +15,7 @@ var User = require('./models/user');
 var Post = require('./models/post');
 var Evaluation = require('./models/evaluation');
 User.sync().then(() => {
-  Post.belongsTo(User, {foreignKey: 'postedBy', targetKey:'userId'});
+  Post.belongsTo(User, {foreignKey: 'postedBy'});
   Post.sync();
   Evaluation.belongsTo(User, {foreignKey: 'userId'});
   Evaluation.sync();
