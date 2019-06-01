@@ -5,10 +5,10 @@ block content
   if user
     if user.displayName
       p #{user.displayName} さんこんにちは
-      img(src=`${user.photos[0].value}` width="50" height="50")
+      //img(src=`${user.photos[0].value}` width="50" height="50")
     else
       p #{user.username}さんこんにちは
-      img(src=`${user.photos[0].value}` width="50" height="50")
+      //img(src=`${user.photos[0].value}` width="50" height="50")
     h2 新規投稿
     form(method="post" action="/posts")
       input(type="hidden" name="_csrf" value!=csrfToken)
