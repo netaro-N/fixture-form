@@ -10,7 +10,7 @@ const Post = loader.database.define('posts', {
   },
   postedBy: {
     type:Sequelize.STRING,
-    primaryKey: true
+    allowNull: false
   },
   content: {
     type: Sequelize.TEXT
