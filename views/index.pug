@@ -30,11 +30,9 @@ block content
               if isPostedByAdmin
                 p 投稿者： 管理人　★
                 img(src=`${post.user.thumbUrl}` width="50px")
-                //p #{post.user.thumbUrl}
               else
                 p 投稿者：#{post.user.username}さん
                 img(src=`${post.user.thumbUrl}`)
-                //p #{post.user.username}
             div.card-body
               p(style="white-space:pre-wrap;") #{post.content}
             div.card-footer
