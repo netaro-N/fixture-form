@@ -37,25 +37,6 @@ describe('/', () => {
           .expect(/テストユーザー/)
           .expect(/test content/)
           .expect(200, done);
-          // .end((err, res) => {
-          //   const match = res.html.match(/<input type="hidden" name="_csrf" value="(.*?)">/);
-          //   const csrf = match[1];
-          //   request(app)
-          //     .post('/posts')
-          //     .set('cookie', res.headers['set-cookie'])
-          //     .send({ content: 'テスト1', _csrf: csrf })
-          //     .expect('Location', '/')
-          //     .expect(302)
-              // .end((err, res) => {
-              //   const createdSchedulePath = res.headers.location;
-              //   request(app)
-              //     .get(createdSchedulePath)
-              //     // TODO 作成された予定と候補が表示されていることをテストする
-              //     .expect(/テスト予定1/)
-              //     .expect(200)
-              //     .end((err, res) => { deleteScheduleAggregate(createdSchedulePath.split('/schedules/')[1], done, err); });
-              // });
-          // });
       });
     });
   });
