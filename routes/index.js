@@ -100,8 +100,20 @@ function isAdmin(req, post) {
 
 router.post('/posts', authenticationEnsurer, csrfProtection, (req, res, next) => {
   if (parseInt(req.query.delete) === 1) {
-    deletePostAggregate(req, () => {
-      res.redirect('/');})
+    Post.findOne({
+      where: {
+        id:req.body.id
+      }
+    }).then((post) => {
+      if (post && (isMine(req, post) || isAdmin(req, post))) {
+        deletePostAggregate(req.body.id, () => {
+          res.redirect('/');})
+      }else{
+        const err = new Error('指定された投稿がない、または、削除する権限がありません。');
+        err.status = 404;
+        next(err);
+      }
+    });
   } else {
     const userId = req.user.provider + req.user.id;
     Post.create({
@@ -113,10 +125,8 @@ router.post('/posts', authenticationEnsurer, csrfProtection, (req, res, next) =>
   }
 });
 
-function deletePostAggregate(req, done, err) {
-  const id = req.body.id;
+function deletePostAggregate(id, done, err) {
   Post.findByPk(id).then((post) => {
-    if (post && (isMine(req, post) || isAdmin(req, post))) {
       //いいねの削除
       Evaluation.findAll({
         where:{ postId:id }
@@ -129,11 +139,6 @@ function deletePostAggregate(req, done, err) {
       if (err) return done(err); // ??いらんやろ。これテスト用や！
       done();
       });
-    } else {
-      const err = new Error('指定された投稿がない、または、削除する権限がありません。');
-      err.status = 404;
-      next(err);
-    }
   });
 }
 
