@@ -34,7 +34,7 @@ block content
                 p 投稿者：#{post.user.username}さん
                 img(src=`${post.user.thumbUrl}`)
             div.card-body
-              p(style="white-space:pre-wrap;") #{post.content}
+              p(class=post.postedBy id=post.id style="white-space:pre-wrap;") #{post.content}
             div.card-footer
               p 投稿日時: #{post.formattedCreatedAt}
               p イイね総数
@@ -51,5 +51,5 @@ block content
                 if isDeletable
                   form(method="post" action="/posts?delete=1")
                     input(type="hidden" name="_csrf" value!=csrfToken)
-                    input(class=post.postedBy type="hidden" name="id" value=post.id)
+                    input(type="hidden" name="id" value=post.id)
                     button(type="submit" onclick="return confirm(`投稿を削除します\nよろしいですね？`);") 削除
