@@ -5,7 +5,7 @@ const passportStub = require('passport-stub');
 const User = require('../models/user');
 const Post = require('../models/post');
 const Evaluation = require('../models/evaluation');
-const deleteScheduleAggregate = require('../routes/index').deleteScheduleAggregate;
+const deletePostAggregate = require('../routes/index').deletePostAggregate;
 
 // ログアウトのテスト
 describe('/logout', () => {
@@ -31,7 +31,7 @@ describe('/', () => {
 
   it('テストユーザーのログインと、testuserによる投稿の確認', (done) => {
     User.upsert({ userId: 'test0', username: 'testuser',thumbUrl:'hoge' }).then(() => {
-      Post.upsert({ id:1, postedBy: 'test0', content: 'test content'}).then(() => {
+      Post.upsert({ id:0, postedBy: 'test0', content: 'test content'}).then(() => {
         request(app)
           .get('/')
           .expect(/テストユーザー/)
@@ -56,7 +56,7 @@ describe('/posts', () => {
 
   it('testuserによる新規投稿、確認、削除', (done) => {
     User.upsert({ userId: 'test0', username: 'testuser',thumbUrl:'hoge' }).then(() => {
-      Post.upsert({ id:1, postedBy: 'test0', content: 'test content'}).then(() => {
+      Post.upsert({ id:0, postedBy: 'test0', content: 'test content'}).then(() => {
         request(app)
           .get('/')
           .expect(/testuser/)
@@ -81,14 +81,8 @@ describe('/posts', () => {
                   .end((err, res) => { 
                     const matchId = res.text.match(/<p class="test0" id="(.*?)" style="white-space:pre-wrap;">テストです/);
                     console.log('matchIdがでないなぁ＾＾＾＾＾'+matchId);
-                    //const id = matchId[1];
-                    //deleteScheduleAggregate(id, done, err); 
-                    request(app)
-                      .get('/')
-                      .expect(/testuser/)
-                      .expect(/test content/)
-                      //.expect(/<input type="hidden" name="_csrf" value=/)
-                      .expect(200, done)
+                    const id = matchId[1];
+                    deletePostAggregate(id, done, err); 
                   });
               });
             });
