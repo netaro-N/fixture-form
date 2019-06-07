@@ -1,5 +1,6 @@
 'use strict';
 const request = require('supertest');
+const assert = require('assert');
 const app = require('../app');
 const passportStub = require('passport-stub');
 const User = require('../models/user');
@@ -126,11 +127,12 @@ describe('/posts', () => {
                 const userId = 'test0';
                 request(app)
                 //postで評価をtrueに
-                  .post()
-                  
-                  
+                  .post(`/post/${id}/users/${userId}`)
+                  .send({ evaluation:true })
+                  .expect('{"status":"OK","evaluation":"true"}')
                   .end((err, res) => { 
                     //assert.equalでも良いが、それよりも再びgetしてイイね総数を取得するほうがよりテストとしてふさわしい。
+                    //いや、データベースが一番大事だから、だとしたらassert.equalだな
                     deletePostAggregate(id, done, err); 
                   });
               });
