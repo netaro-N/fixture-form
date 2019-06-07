@@ -108,10 +108,9 @@ describe('/posts', () => {
       Post.upsert({ id:1, postedBy: 'test0', content: 'test content'}).then(() => {
         request(app)
           .get('/')
-          .expect(/testuser/)
-          .expect(/test content/)
-          //.expect(/<input type="hidden" name="_csrf" value=/)
-          .expect(200)
+          //.expect(/testuser/)
+          //.expect(/test content/)
+          //.expect(200)
           .end((err, res) => {
             const match = res.text.match(/<input type="hidden" name="_csrf" value="(.*?)">/);
             const csrf = match[1];
@@ -119,18 +118,19 @@ describe('/posts', () => {
               .post('/posts')
               .set('cookie', res.headers['set-cookie'])
               .send({ content: 'テストです', _csrf: csrf })
-              .expect('Location', '/')
-              .expect(302)
+              //.expect('Location', '/')
+              //.expect(302)
               .end((err, res) => {
+                const matchId = res.text.match(/<p class="test0" id="(.*?)" style="white-space:pre-wrap;">テストです/);
+                const id = matchId[1];
+                const userId = 'test0';
                 request(app)
-                  .get('/')
-                  // TODO 作成された投稿が表示されていることをテストする
-                  .expect(/テストです/)
-                  .expect(200)
+                //postで評価をtrueに
+                  .post()
+                  
+                  
                   .end((err, res) => { 
-                    const matchId = res.text.match(/<p class="test0" id="(.*?)" style="white-space:pre-wrap;">テストです/);
-                    console.log('matchIdがでないなぁ＾＾＾＾＾'+matchId);
-                    const id = matchId[1];
+                    //assert.equalでも良いが、それよりも再びgetしてイイね総数を取得するほうがよりテストとしてふさわしい。
                     deletePostAggregate(id, done, err); 
                   });
               });
