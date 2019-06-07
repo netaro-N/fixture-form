@@ -31,7 +31,7 @@ describe('/', () => {
 
   it('テストユーザーのログインと、testuserによる投稿の確認', (done) => {
     User.upsert({ userId: 'test0', username: 'testuser',thumbUrl:'hoge' }).then(() => {
-      Post.upsert({ id:0, postedBy: 'test0', content: 'test content'}).then(() => {
+      Post.upsert({ id:1, postedBy: 'test0', content: 'test content'}).then(() => {
         request(app)
           .get('/')
           .expect(/テストユーザー/)
@@ -56,7 +56,7 @@ describe('/posts', () => {
 
   it('testuserによる新規投稿、確認、削除', (done) => {
     User.upsert({ userId: 'test0', username: 'testuser',thumbUrl:'hoge' }).then(() => {
-      Post.upsert({ id:0, postedBy: 'test0', content: 'test content'}).then(() => {
+      Post.upsert({ id:1, postedBy: 'test0', content: 'test content'}).then(() => {
         request(app)
           .get('/')
           .expect(/testuser/)
@@ -71,7 +71,56 @@ describe('/posts', () => {
               .set('cookie', res.headers['set-cookie'])
               .send({ content: 'テストです', _csrf: csrf })
               .expect('Location', '/')
-              .expect(303)
+              .expect(302)
+              .end((err, res) => {
+                request(app)
+                  .get('/')
+                  // TODO 作成された投稿が表示されていることをテストする
+                  .expect(/テストです/)
+                  .expect(200)
+                  .end((err, res) => { 
+                    const matchId = res.text.match(/<p class="test0" id="(.*?)" style="white-space:pre-wrap;">テストです/);
+                    console.log('matchIdがでないなぁ＾＾＾＾＾'+matchId);
+                    const id = matchId[1];
+                    deletePostAggregate(id, done, err); 
+                  });
+              });
+            });
+      });
+    });
+  });
+});
+
+// いいね機能のテスト
+describe('/posts', () => {
+  before(() => {
+    passportStub.install(app);
+    passportStub.login({ id: 0, provider: 'test', username: 'testuser', photos:[{ value: 'hoge' }] });
+  });
+
+  after(() => {
+    passportStub.logout();
+    passportStub.uninstall(app);
+  });
+
+  it('testuserによる新規投稿、確認、削除', (done) => {
+    User.upsert({ userId: 'test0', username: 'testuser',thumbUrl:'hoge' }).then(() => {
+      Post.upsert({ id:1, postedBy: 'test0', content: 'test content'}).then(() => {
+        request(app)
+          .get('/')
+          .expect(/testuser/)
+          .expect(/test content/)
+          //.expect(/<input type="hidden" name="_csrf" value=/)
+          .expect(200)
+          .end((err, res) => {
+            const match = res.text.match(/<input type="hidden" name="_csrf" value="(.*?)">/);
+            const csrf = match[1];
+            request(app)
+              .post('/posts')
+              .set('cookie', res.headers['set-cookie'])
+              .send({ content: 'テストです', _csrf: csrf })
+              .expect('Location', '/')
+              .expect(302)
               .end((err, res) => {
                 request(app)
                   .get('/')

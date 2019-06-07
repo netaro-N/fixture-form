@@ -120,7 +120,7 @@ router.post('/posts', authenticationEnsurer, csrfProtection, (req, res, next) =>
       postedBy: userId,
       content: req.body.content
     }).then(() => {
-      res.redirect(303, '/');
+      res.redirect(302, '/');
     });
   }
 });
