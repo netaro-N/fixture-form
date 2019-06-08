@@ -138,7 +138,7 @@ describe('/posts', () => {
                           where: { postId : id }
                         }).then((evaluations) => {
                           assert.equal(evaluations.length, 1);
-                          //assert.equal(evaluations[0].evaluation, true);
+                          assert.equal(evaluations[0].evaluation, true);
                           deletePostAggregate(id, done, err);
                         }); 
                       });
