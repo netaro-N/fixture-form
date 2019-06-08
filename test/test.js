@@ -142,7 +142,6 @@ describe('/posts', () => {
                           deletePostAggregate(id, done, err);
                         }); 
                       });
-                    
                   });
               });
             });

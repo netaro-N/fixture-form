@@ -26,8 +26,8 @@
   - [x] トークン取得、投稿
   - [x] id取得、削除
 
-- [ ] いいねのテスト
-  - [ ] availability をevaluation に。2をtrueに変えてほとんど同じ。
+- [x] いいねのテスト
+  - [x] availability をevaluation に。2をtrueに変えてほとんど同じ。
 - [ ] 全内容削除のテスト
 
 ##その他
