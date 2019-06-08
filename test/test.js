@@ -104,7 +104,7 @@ describe('/posts', () => {
     passportStub.uninstall(app);
   });
 
-  it('testuserによる新規投稿、確認、削除', (done) => {
+  it('いいね機能のテスト', (done) => {
     User.upsert({ userId: 'test0', username: 'testuser',thumbUrl:'hoge' }).then(() => {
       Post.upsert({ id:1, postedBy: 'test0', content: 'test content'}).then(() => {
         request(app)
@@ -119,21 +119,30 @@ describe('/posts', () => {
               .post('/posts')
               .set('cookie', res.headers['set-cookie'])
               .send({ content: 'テストです', _csrf: csrf })
-              //.expect('Location', '/')
-              //.expect(302)
               .end((err, res) => {
-                const matchId = res.text.match(/<p class="test0" id="(.*?)" style="white-space:pre-wrap;">テストです/);
-                const id = matchId[1];
-                const userId = 'test0';
                 request(app)
-                //postで評価をtrueに
-                  .post(`/post/${id}/users/${userId}`)
-                  .send({ evaluation:true })
-                  .expect('{"status":"OK","evaluation":"true"}')
-                  .end((err, res) => { 
-                    //assert.equalでも良いが、それよりも再びgetしてイイね総数を取得するほうがよりテストとしてふさわしい。
-                    //いや、データベースが一番大事だから、だとしたらassert.equalだな
-                    deletePostAggregate(id, done, err); 
+                  .get('/')
+                  .end((err, res) => {
+                    const matchId = res.text.match(/<p class="test0" id="(.*?)" style="white-space:pre-wrap;">テストです/);
+                    const id = matchId[1];
+                    const userId = 'test0';
+                    request(app)
+                    //postで評価をtrueに
+                      .post(`/post/${id}/users/${userId}`)
+                      .send({ evaluation:true })
+                      .expect('{"status":"OK","evaluation":true}')
+                      .end((err, res) => { 
+                        //assert.equalでも良いが、それよりも再びgetしてイイね総数を取得するほうがよりテストとしてふさわしい。
+                        //いや、データベースが一番大事だから、だとしたらassert.equalだな
+                        Evaluation.findAll({
+                          where: { postId : id }
+                        }).then((evaluations) => {
+                          assert.equal(evaluations.length, 1);
+                          //assert.equal(evaluations[0].evaluation, true);
+                          deletePostAggregate(id, done, err);
+                        }); 
+                      });
+                    
                   });
               });
             });
