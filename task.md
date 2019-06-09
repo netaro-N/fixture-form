@@ -29,6 +29,7 @@
 - [x] いいねのテスト
   - [x] availability をevaluation に。2をtrueに変えてほとんど同じ。
 - [ ] 全内容削除のテスト
+ - [ ]参考するとき「.set('cookie', res.headers['set-cookie'])」に気をつけろ
 
 ##その他
 - [ ] というかJリーグの日程csvでダウンロード可能か？
