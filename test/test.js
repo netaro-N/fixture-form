@@ -176,6 +176,8 @@ describe('/posts?delete=1', () => {
               .set('cookie', res.headers['set-cookie'])
               .send({ content: 'テストです', _csrf: csrf })
               .end((err, res) => {
+                const setCookie = res.headers['set-cookie'];
+                
                 request(app)
                   .get('/')
                   .end((err, res) => {
@@ -195,8 +197,9 @@ describe('/posts?delete=1', () => {
                     });
 
                     //削除
-                    const promiseDeleted 
+                    const promiseDeleted = promiseEvaluation.then(() => {
 
+                    })
 
                   });
               });
