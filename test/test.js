@@ -22,7 +22,7 @@ describe('/logout', () => {
 describe('/', () => {
   before(() => {
     passportStub.install(app);
-    passportStub.login({ id: 'test', provider: 'テスト', username: 'テストユーザー', photos:[{ value: 'hoge' }] });
+    passportStub.login({ id: 'test', provider: 'テスト', username: 'テストユーザー', photos: [{ value: 'hoge' }] });
   });
 
   after(() => {
@@ -31,8 +31,8 @@ describe('/', () => {
   });
 
   it('テストユーザーのログインと、testuserによる投稿の確認', (done) => {
-    User.upsert({ userId: 'test0', username: 'testuser',thumbUrl:'hoge' }).then(() => {
-      Post.upsert({ id:1, postedBy: 'test0', content: 'test content'}).then(() => {
+    User.upsert({ userId: 'test0', username: 'testuser', thumbUrl: 'hoge' }).then(() => {
+      Post.upsert({ id: 1, postedBy: 'test0', content: 'test content' }).then(() => {
         request(app)
           .get('/')
           .expect(/テストユーザー/)
@@ -47,7 +47,7 @@ describe('/', () => {
 describe('/posts', () => {
   before(() => {
     passportStub.install(app);
-    passportStub.login({ id: 0, provider: 'test', username: 'testuser', photos:[{ value: 'hoge' }] });
+    passportStub.login({ id: 0, provider: 'test', username: 'testuser', photos: [{ value: 'hoge' }] });
   });
 
   after(() => {
@@ -56,8 +56,8 @@ describe('/posts', () => {
   });
 
   it('testuserによる新規投稿、確認、削除', (done) => {
-    User.upsert({ userId: 'test0', username: 'testuser',thumbUrl:'hoge' }).then(() => {
-      Post.upsert({ id:1, postedBy: 'test0', content: 'test content'}).then(() => {
+    User.upsert({ userId: 'test0', username: 'testuser', thumbUrl: 'hoge' }).then(() => {
+      Post.upsert({ id: 1, postedBy: 'test0', content: 'test content' }).then(() => {
         request(app)
           .get('/')
           .expect(/testuser/)
@@ -79,14 +79,14 @@ describe('/posts', () => {
                   // TODO 作成された投稿が表示されていることをテストする
                   .expect(/テストです/)
                   .expect(200)
-                  .end((err, res) => { 
+                  .end((err, res) => {
                     const matchId = res.text.match(/<p class="test0" id="(.*?)" style="white-space:pre-wrap;">テストです/);
-                    console.log('matchIdがでないなぁ＾＾＾＾＾'+matchId);
+                    console.log('matchIdがでないなぁ＾＾＾＾＾' + matchId);
                     const id = matchId[1];
-                    deletePostAggregate(id, done, err); 
+                    deletePostAggregate(id, done, err);
                   });
               });
-            });
+          });
       });
     });
   });
@@ -96,7 +96,7 @@ describe('/posts', () => {
 describe('/post/:postId/users/:userId', () => {
   before(() => {
     passportStub.install(app);
-    passportStub.login({ id: 0, provider: 'test', username: 'testuser', photos:[{ value: 'hoge' }] });
+    passportStub.login({ id: 0, provider: 'test', username: 'testuser', photos: [{ value: 'hoge' }] });
   });
 
   after(() => {
@@ -105,8 +105,8 @@ describe('/post/:postId/users/:userId', () => {
   });
 
   it('いいね機能のテスト', (done) => {
-    User.upsert({ userId: 'test0', username: 'testuser',thumbUrl:'hoge' }).then(() => {
-      Post.upsert({ id:1, postedBy: 'test0', content: 'test content'}).then(() => {
+    User.upsert({ userId: 'test0', username: 'testuser', thumbUrl: 'hoge' }).then(() => {
+      Post.upsert({ id: 1, postedBy: 'test0', content: 'test content' }).then(() => {
         request(app)
           .get('/')
           //.expect(/testuser/)
@@ -127,24 +127,24 @@ describe('/post/:postId/users/:userId', () => {
                     const id = matchId[1];
                     const userId = 'test0';
                     request(app)
-                    //postで評価をtrueに
+                      //postで評価をtrueに
                       .post(`/post/${id}/users/${userId}`)
-                      .send({ evaluation:true })
+                      .send({ evaluation: true })
                       .expect('{"status":"OK","evaluation":true}')
-                      .end((err, res) => { 
+                      .end((err, res) => {
                         //assert.equalでも良いが、それよりも再びgetしてイイね総数を取得するほうがよりテストとしてふさわしい。
                         //いや、データベースが一番大事だから、だとしたらassert.equalだな
                         Evaluation.findAll({
-                          where: { postId : id }
+                          where: { postId: id }
                         }).then((evaluations) => {
                           assert.equal(evaluations.length, 1);
                           assert.equal(evaluations[0].evaluation, true);
                           deletePostAggregate(id, done, err);
-                        }); 
+                        });
                       });
                   });
               });
-            });
+          });
       });
     });
   });
@@ -154,7 +154,7 @@ describe('/post/:postId/users/:userId', () => {
 describe('/posts?delete=1', () => {
   before(() => {
     passportStub.install(app);
-    passportStub.login({ id: 0, provider: 'test', username: 'testuser', photos:[{ value: 'hoge' }] });
+    passportStub.login({ id: 0, provider: 'test', username: 'testuser', photos: [{ value: 'hoge' }] });
   });
 
   after(() => {
@@ -163,8 +163,8 @@ describe('/posts?delete=1', () => {
   });
 
   it('投稿に関する全ての情報が削除できる', (done) => {
-    User.upsert({ userId: 'test0', username: 'testuser',thumbUrl:'hoge' }).then(() => {
-      Post.upsert({ id:1, postedBy: 'test0', content: 'test content'}).then(() => {
+    User.upsert({ userId: 'test0', username: 'testuser', thumbUrl: 'hoge' }).then(() => {
+      Post.upsert({ id: 1, postedBy: 'test0', content: 'test content' }).then(() => {
         request(app)
           .get('/')
           .end((err, res) => {
@@ -176,7 +176,7 @@ describe('/posts?delete=1', () => {
               .set('cookie', res.headers['set-cookie'])
               .send({ content: 'テスト２です', _csrf: csrf })
               .end((err, res) => {
-                
+
                 request(app)
                   .get('/')
                   .end((err, res) => {
@@ -189,13 +189,13 @@ describe('/posts?delete=1', () => {
 
                     const promiseEvaluation = new Promise((resolve) => {
                       request(app)
-                    //postで評価をtrueに
-                      .post(`/post/${id}/users/${userId}`)
-                      .send({ evaluation:true })
-                      .end((err, res) => {
-                        if (err) done(err);
-                        resolve();
-                      });
+                        //postで評価をtrueに
+                        .post(`/post/${id}/users/${userId}`)
+                        .send({ evaluation: true })
+                        .end((err, res) => {
+                          if (err) done(err);
+                          resolve();
+                        });
                     });
 
                     //削除
@@ -203,8 +203,8 @@ describe('/posts?delete=1', () => {
                       return new Promise((resolve) => {
                         request(app)
                           .post(`/posts?delete=1`)
-                          .set('Cookie',setCookie)
-                          .send({ _csrf: csrf, id:id })
+                          .set('Cookie', setCookie)
+                          .send({ _csrf: csrf, id: id })
                           .end((err, res) => {
                             if (err) done(err);
                             resolve();
@@ -214,11 +214,13 @@ describe('/posts?delete=1', () => {
 
                     //テスト
                     promiseDeleted.then(() => {
+                      //いいねが削除できているか？
                       const p1 = Evaluation.findAll({
-                        where: { postId : id }
+                        where: { postId: id }
                       }).then((evaluations) => {
                         assert.equal(evaluations.length, 0);
                       });
+                      //投稿が削除できているか？
                       const p2 = Post.findByPk(id).then((post) => {
                         assert.equal(!post, true);
                       });
@@ -228,9 +230,9 @@ describe('/posts?delete=1', () => {
                       });
                     });
 
-            });
+                  });
+              });
           });
-        });
       });
     });
   });
