@@ -174,16 +174,18 @@ describe('/posts?delete=1', () => {
             request(app)
               .post('/posts')
               .set('cookie', res.headers['set-cookie'])
-              .send({ content: 'テストです', _csrf: csrf })
+              .send({ content: 'テスト２です', _csrf: csrf })
               .end((err, res) => {
-                const setCookie = res.headers['set-cookie'];
                 
                 request(app)
                   .get('/')
                   .end((err, res) => {
-                    const matchId = res.text.match(/<p class="test0" id="(.*?)" style="white-space:pre-wrap;">テストです/);
+                    const matchId = res.text.match(/<p class="test0" id="(.*?)" style="white-space:pre-wrap;">テスト２です/);
                     const id = matchId[1];
                     const userId = 'test0';
+                    const setCookie = res.headers['set-cookie'];
+                    const match = res.text.match(/<input type="hidden" name="_csrf" value="(.*?)">/);
+                    const csrf = match[1];
 
                     const promiseEvaluation = new Promise((resolve) => {
                       request(app)
@@ -198,12 +200,37 @@ describe('/posts?delete=1', () => {
 
                     //削除
                     const promiseDeleted = promiseEvaluation.then(() => {
+                      return new Promise((resolve) => {
+                        request(app)
+                          .post(`/posts?delete=1`)
+                          .set('Cookie',setCookie)
+                          .send({ _csrf: csrf, id:id })
+                          .end((err, res) => {
+                            if (err) done(err);
+                            resolve();
+                          });
+                      });
+                    });
 
-                    })
+                    //テスト
+                    promiseDeleted.then(() => {
+                      const p1 = Evaluation.findAll({
+                        where: { postId : id }
+                      }).then((evaluations) => {
+                        assert.equal(evaluations.length, 0);
+                      });
+                      const p2 = Post.findByPk(id).then((post) => {
+                        assert.equal(!post, true);
+                      });
+                      Promise.all([p1, p2]).then(() => {
+                        if (err) return done(err);
+                        done();
+                      });
+                    });
 
-                  });
-              });
             });
+          });
+        });
       });
     });
   });
